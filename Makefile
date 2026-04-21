@@ -1,6 +1,6 @@
 # Makefile for ApexStream project
 
-.PHONY: infra-up infra-down build-ingestor test lint help
+.PHONY: help infra-up infra-down tf-init tf-plan k8s-deploy k8s-status run-ingestor run-simulator run-overheat build test vet test-coverage bench
 
 help:
 	@echo "Available commands:"
@@ -11,6 +11,7 @@ help:
 	@echo "  run-overheat    Run the F1 Telemetry Simulator (Overheat mode)"
 	@echo "  build           Compile binaries for all services"
 	@echo "  test            Run all tests"
+	@echo "  vet             Run static analysis with go vet"
 
 infra-up:
 	docker-compose -f deployments/docker-compose.yml up -d
@@ -49,10 +50,14 @@ build:
 	go build -o bin/processor cmd/processor/main.go
 	go build -o bin/alert-manager cmd/alert-manager/main.go
 	go build -o bin/storage-api cmd/storage-api/main.go
+	go build -o bin/simulator cmd/simulator/main.go
 	@echo "Build complete. Binaries located in ./bin"
 
 test:
 	go test ./... -v
+
+vet:
+	go vet ./...
 
 test-coverage:
 	go test ./... -coverprofile=coverage.out

@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    name: Test, vet, and build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Run tests
+        run: go test ./... -v
+
+      - name: Run go vet
+        run: go vet ./...
+
+      - name: Build services
+        run: |
+          mkdir -p bin
+          go build -o bin/ingestor ./cmd/ingestor
+          go build -o bin/processor ./cmd/processor
+          go build -o bin/alert-manager ./cmd/alert-manager
+          go build -o bin/storage-api ./cmd/storage-api
+          go build -o bin/simulator ./cmd/simulator

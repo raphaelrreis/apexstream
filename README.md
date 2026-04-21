@@ -1,5 +1,7 @@
 # ApexStream 🏎️💨
 
+[![CI](https://github.com/raphaelrreis/apexstream/actions/workflows/ci.yml/badge.svg)](https://github.com/raphaelrreis/apexstream/actions/workflows/ci.yml)
+
 ApexStream is a high-performance distributed system for real-time Formula 1 telemetry processing, built with Go.
 
 ## 🎯 Project Goal (Portfolio Showcase)
