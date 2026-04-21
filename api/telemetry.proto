@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "github.com/raphaelrreis/apexstream/api";
+
+import "google/protobuf/timestamp.proto";
+
+// TelemetryMessage é o formato binário ultra-compacto para o rádio do carro.
+message TelemetryMessage {
+  string car_id = 1;
+  google.protobuf.Timestamp timestamp = 2;
+
+  // Unidade de Potência
+  int32 engine_rpm = 3;
+  double oil_temp = 4;
+  double water_temp = 5;
+  double fuel_flow = 6;
+  double fuel_remaining = 7;
+  double turbo_boost = 8;
+
+  // Sistema Híbrido
+  double battery_soc = 9;
+  double mguk_recovery = 10;
+  double mguh_recovery = 11;
+  double ers_deployment = 12;
+
+  // Dinâmica
+  double speed = 13;
+  int32 gear = 14;
+  double throttle = 15;
+  double brake = 16;
+  double steering_angle = 17;
+  bool drs_open = 18;
+
+  // Pneus e Freios
+  Tires tires = 19;
+  Brakes brakes = 20;
+
+  // Aerodinâmica e Forças
+  GForces g_forces = 21;
+}
+
+message Tires {
+  double temp_fl = 1;
+  double temp_fr = 2;
+  double temp_rl = 3;
+  double temp_rr = 4;
+  double pressure_fl = 5;
+  double pressure_fr = 6;
+  double pressure_rl = 7;
+  double pressure_rr = 8;
+}
+
+message Brakes {
+  double temp_fl = 1;
+  double temp_fr = 2;
+  double temp_rl = 3;
+  double temp_rr = 4;
+}
+
+message GForces {
+  double lateral = 1;
+  double longitudinal = 2;
+  double vertical = 3;
+}
+
+// TelemetryService permite que outros serviços consultem dados históricos via gRPC.
+service TelemetryService {
+  rpc GetLatestTelemetry(CarRequest) returns (TelemetryMessage);
+  rpc StreamTelemetry(CarRequest) returns (stream TelemetryMessage);
+}
+
+message CarRequest {
+  string car_id = 1;
+}
