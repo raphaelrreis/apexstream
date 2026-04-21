@@ -1,0 +1,19 @@
+# Binaries
+bin/
+obj/
+
+# Git
+.git
+.gitignore
+
+# IDEs
+.idea/
+.vscode/
+
+# Build artifacts
+coverage.out
+coverage.html
+
+# Local dev
+deployments/data/
+docker-compose.override.yml

@@ -1,0 +1,24 @@
+# Binaries
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Dependency directories
+vendor/
+
+# Go workspace file
+go.work
+
+# IDEs
+.idea/
+.vscode/
+
+# Environment variables
+.env
+.env.*
+
+# Docker Data
+deployments/data/
