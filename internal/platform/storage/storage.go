@@ -5,6 +5,7 @@ import (
 	"log/slog"
 
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
+	"github.com/influxdata/influxdb-client-go/v2/api"
 )
 
 // Client provides a resilient wrapper around the InfluxDB client.
@@ -25,7 +26,7 @@ func NewClient(url, token, org, bucket string) *Client {
 }
 
 // WriteAPI returns the asynchronous write interface for high-performance ingestion.
-func (c *Client) WriteAPI() influxdb2.WriteAPI {
+func (c *Client) WriteAPI() api.WriteAPI {
 	return c.influx.WriteAPI(c.org, c.bucket)
 }
 

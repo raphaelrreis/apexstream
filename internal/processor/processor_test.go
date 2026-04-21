@@ -1,9 +1,7 @@
 package processor
 
 import (
-	"context"
 	"testing"
-	"time"
 
 	"github.com/raphaelrreis/apexstream/pkg/domain"
 )
@@ -12,10 +10,10 @@ import (
 // We use Table-Driven Tests to cover multiple edge cases in a single test function.
 func TestWorkerLogic(t *testing.T) {
 	tests := []struct {
-		name             string
-		input            domain.TelemetryData
-		expectedHeat     bool
-		minTireWear      float64
+		name         string
+		input        domain.TelemetryData
+		expectedHeat bool
+		minTireWear  float64
 	}{
 		{
 			name: "Normal Operating Conditions",

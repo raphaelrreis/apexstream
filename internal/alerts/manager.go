@@ -40,31 +40,31 @@ func (m *Manager) Start(ctx context.Context) error {
 func (m *Manager) evaluateAlerts(data domain.ProcessedTelemetry) {
 	// Engine Integrity Monitoring
 	if data.IsOverheating {
-		slog.Warn("CRITICAL ALERT: Engine Overheating Detected", 
-			"car_id", data.CarID, 
-			"oil_temp", data.OilTemperature, 
+		slog.Warn("CRITICAL ALERT: Engine Overheating Detected",
+			"car_id", data.CarID,
+			"oil_temp", data.OilTemperature,
 			"water_temp", data.WaterTemperature)
 	}
 
 	// Fuel Strategy Safety Margin
 	if data.FuelRemaining < 5.0 {
-		slog.Warn("ALERT: Low Fuel Level", 
-			"car_id", data.CarID, 
+		slog.Warn("ALERT: Low Fuel Level",
+			"car_id", data.CarID,
 			"fuel_left", data.FuelRemaining)
 	}
 
 	// Tire Structural Integrity Watchdog
 	if data.TireWearFL > 70.0 || data.TireWearFR > 70.0 || data.TireWearRL > 70.0 || data.TireWearRR > 70.0 {
-		slog.Warn("ALERT: High Tire Wear Detected - Box Box", 
-			"car_id", data.CarID, 
-			"wear_fl", data.TireWearFL, 
+		slog.Warn("ALERT: High Tire Wear Detected - Box Box",
+			"car_id", data.CarID,
+			"wear_fl", data.TireWearFL,
 			"wear_fr", data.TireWearFR)
 	}
-	
+
 	// ERS Energy Recovery Monitoring
 	if data.BatterySOC < 10.0 {
-		slog.Info("ALERT: ERS Battery Low - Recharging Required", 
-			"car_id", data.CarID, 
+		slog.Info("ALERT: ERS Battery Low - Recharging Required",
+			"car_id", data.CarID,
 			"soc", data.BatterySOC)
 	}
 }

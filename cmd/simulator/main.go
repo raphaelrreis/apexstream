@@ -47,7 +47,7 @@ func main() {
 		}
 
 		if *mode == "normal" {
-			fmt.Printf("\r🚀 Racing: Speed %3.0f km/h | RPM %5d | Oil %3.1f°C", 
+			fmt.Printf("\r🚀 Racing: Speed %3.0f km/h | RPM %5d | Oil %3.1f°C",
 				data.Speed, data.EngineRPM, data.OilTemperature)
 		}
 	}
@@ -61,22 +61,22 @@ func generateTelemetry(carID, mode string) domain.TelemetryData {
 
 	// Randomized telemetry points for realistic simulation
 	return domain.TelemetryData{
-		CarID:             carID,
-		Timestamp:         time.Now(),
-		EngineRPM:         10500 + rand.Intn(2500),
-		OilTemperature:    baseTemp + rand.Float64()*3,
-		WaterTemperature:  92.0 + rand.Float64()*8,
-		Speed:             240.0 + rand.Float64()*60,
-		Gear:              7,
-		Throttle:          100.0,
-		Brake:             0.0,
-		FuelRemaining:     42.5,
-		BatterySOC:        82.0,
-		GForceLateral:     3.8 + rand.Float64()*1.2,
-		TireTempFL:        102.0 + rand.Float64()*4,
-		TireTempFR:        104.0 + rand.Float64()*4,
-		TireTempRL:        96.0 + rand.Float64()*6,
-		TireTempRR:        97.0 + rand.Float64()*6,
-		GForceVertical:    0.1 + rand.Float64()*0.4,
+		CarID:            carID,
+		Timestamp:        time.Now(),
+		EngineRPM:        10500 + rand.Intn(2500),
+		OilTemperature:   baseTemp + rand.Float64()*3,
+		WaterTemperature: 92.0 + rand.Float64()*8,
+		Speed:            240.0 + rand.Float64()*60,
+		Gear:             7,
+		Throttle:         100.0,
+		Brake:            0.0,
+		FuelRemaining:    42.5,
+		BatterySOC:       82.0,
+		GForceLateral:    3.8 + rand.Float64()*1.2,
+		TireTempFL:       102.0 + rand.Float64()*4,
+		TireTempFR:       104.0 + rand.Float64()*4,
+		TireTempRL:       96.0 + rand.Float64()*6,
+		TireTempRR:       97.0 + rand.Float64()*6,
+		GForceVertical:   0.1 + rand.Float64()*0.4,
 	}
 }

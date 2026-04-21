@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/raphaelrreis/apexstream/internal/platform/nats"
-	"github.com/raphaelrreis/apexstream/internal/platform/storage"
-	"github.com/raphaelrreis/apexstream/internal/storage"
+	platformstorage "github.com/raphaelrreis/apexstream/internal/platform/storage"
+	storageservice "github.com/raphaelrreis/apexstream/internal/storage"
 )
 
 func main() {
@@ -44,7 +44,7 @@ func main() {
 	org := "mercedes-f1"
 	bucket := "telemetry"
 
-	influxClient := storage.NewClient(influxURL, token, org, bucket)
+	influxClient := platformstorage.NewClient(influxURL, token, org, bucket)
 	defer influxClient.Close()
 
 	// Check de saúde do banco
@@ -57,7 +57,7 @@ func main() {
 	}
 
 	// 4. Iniciar o Serviço de Persistência
-	storageSrv := storage.NewStorageService(nc, influxClient.WriteAPI())
+	storageSrv := storageservice.NewStorageService(nc, influxClient.WriteAPI())
 	if err := storageSrv.Start(ctx); err != nil {
 		slog.Error("Failed to start storage service", "error", err)
 		os.Exit(1)
@@ -66,10 +66,10 @@ func main() {
 	// 5. Graceful Shutdown
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	
+
 	sig := <-quit
 	slog.Info("Shutting down storage service", "signal", sig.String())
-	
+
 	cancel()
 	time.Sleep(1 * time.Second)
 	slog.Info("Storage service stopped")

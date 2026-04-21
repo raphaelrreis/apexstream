@@ -43,7 +43,7 @@ func main() {
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
 	ingestorSrv := ingestor.NewServer(":8081", nc)
-	
+
 	go func() {
 		if err := ingestorSrv.Start(ctx); err != nil {
 			slog.Error("Ingestor server failed", "error", err)
@@ -53,9 +53,9 @@ func main() {
 
 	sig := <-quit
 	slog.Info("Received shutdown signal", "signal", sig.String())
-	
+
 	cancel()
-	
+
 	time.Sleep(1 * time.Second)
 	slog.Info("Ingestor Service stopped cleanly")
 }

@@ -45,10 +45,10 @@ func main() {
 	// 5. Wait for termination signal
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	
+
 	sig := <-quit
 	slog.Info("Shutting down alert manager", "signal", sig.String())
-	
+
 	cancel()
 	time.Sleep(1 * time.Second)
 	slog.Info("Alert manager service stopped")
