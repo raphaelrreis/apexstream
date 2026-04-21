@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # NATS: High-performance messaging system (written in Go)
+  # Used for ultra-low latency Pub/Sub communication between microservices.
+  nats:
+    image: nats:2.10-alpine
+    container_name: apexstream-nats
+    ports:
+      - "4222:4222" # Client port
+      - "8222:8222" # HTTP Monitoring port
+    command: ["-m", "8222"] # Enable HTTP monitoring
+
+  # InfluxDB: Time-Series Database
+  # Perfect for storing thousands of telemetry data points per second.
+  influxdb:
+    image: influxdb:2.7-alpine
+    container_name: apexstream-influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=apexstream_pass
+      - DOCKER_INFLUXDB_INIT_ORG=mercedes-f1 # Fictional team name
+      - DOCKER_INFLUXDB_INIT_BUCKET=telemetry
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-auth-token
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+
+volumes:
+  influxdb_data:
+

@@ -1,0 +1,87 @@
+# Kubernetes Manifests for ApexStream Microservices
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: telemetry-processor
+spec:
+  replicas: 3 # Scaled for high performance
+  selector:
+    matchLabels:
+      app: processor
+  template:
+    metadata:
+      labels:
+        app: processor
+    spec:
+      containers:
+      - name: processor
+        image: apexstream/processor:latest
+        env:
+        - name: NATS_URL
+          value: "nats://nats:4222"
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alert-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alert-manager
+  template:
+    metadata:
+      labels:
+        app: alert-manager
+    spec:
+      containers:
+      - name: alert-manager
+        image: apexstream/alert-manager:latest
+        env:
+        - name: NATS_URL
+          value: "nats://nats:4222"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingestor
+spec:
+  type: LoadBalancer # Exposed to receive car telemetry
+  selector:
+    app: ingestor
+  ports:
+    - protocol: UDP
+      port: 8081
+      targetPort: 8081
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ingestor
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ingestor
+  template:
+    metadata:
+      labels:
+        app: ingestor
+    spec:
+      containers:
+      - name: ingestor
+        image: apexstream/ingestor:latest
+        ports:
+        - containerPort: 8081
+          protocol: UDP
+        env:
+        - name: NATS_URL
+          value: "nats://nats:4222"
